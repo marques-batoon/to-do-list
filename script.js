@@ -34,13 +34,16 @@ var inputNewReminder = function() {
             }),
             success: function (response, textStatus) {
               console.log(response);
+              $('<tr class="task"><td id="' + response.task.id + '"><i class="bi bi-circle"></i> ' + response.task.content + '<i class="bi bi-x"></i></td></tr>').insertBefore('#inputRow');
             },
             error: function (request, textStatus, errorMessage) {
               console.log(errorMessage);
             }
           });
+          
+        
     }
-    updateList();
+
 }
 
 var deleteItem = function(delId) {
@@ -63,7 +66,7 @@ $(document).on('click', '.bi-x', function(e) {
 window.addEventListener('keypress', function(e){
     if(e.key == "Enter"){
         inputNewReminder();
-        updateList();
+        $('input').val('');
     }
 });
 
