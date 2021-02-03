@@ -8,8 +8,8 @@ var updateList = function() {
         success: function(response) {;
             taskList = response;
             for(var i = 0; i < response.tasks.length; i++){
-                $('tbody').prepend($('<tr class="task"><td><i class="bi bi-circle"></i> ' + response.tasks[i].content + '</td></tr>'));
-                console.log(response.tasks[i].content);
+                $('tbody').prepend($('<tr class="task"><td id="'+ response.tasks[i].id +'"><i class="bi bi-circle"></i> ' + response.tasks[i].content + '<i class="bi bi-x"></i></td></tr>'));
+                console.log(response.tasks[i]);
             }
             //$('tr.task').html(taskList.tasks[0].content);
         },
@@ -18,7 +18,6 @@ var updateList = function() {
         }
     });
 }
-updateList();
 
 var inputNewReminder = function() {
     var reminder = document.querySelector('input').value;
@@ -44,6 +43,23 @@ var inputNewReminder = function() {
     updateList();
 }
 
+var deleteItem = function(delId) {
+    $.ajax({
+        url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks/' + delId + '?api_key=286',
+        type: 'DELETE',
+        success: function(result) {
+            console.log(result);
+        }
+    });
+}
+
+$(document).on('click', '.bi-x', function(e) {
+    console.log("clicked me!");
+    var idNum = $(this).parent().attr('id');
+    deleteItem(idNum);
+    $(this).parent().parent().remove();
+})
+
 window.addEventListener('keypress', function(e){
     if(e.key == "Enter"){
         inputNewReminder();
@@ -55,3 +71,5 @@ var consoleLog = function(){
     console.log(taskList);
     console.log(taskList.tasks[0].content);
 };
+
+updateList();
