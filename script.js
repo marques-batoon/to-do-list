@@ -9,7 +9,7 @@ var updateList = function() {
             taskList = response;
             for(var i = 0; i < response.tasks.length; i++){
                 $('tbody').prepend($('<tr class="task"><td><i class="bi bi-circle"></i> ' + response.tasks[i].content + '</td></tr>'));
-                console.log(response.tasks[i].content);
+                console.log(response.tasks[i]);
             }
             //$('tr.task').html(taskList.tasks[0].content);
         },
@@ -43,6 +43,17 @@ var inputNewReminder = function() {
     }
     updateList();
 }
+
+var deleteItem = function(delId) {
+    $.ajax({
+        url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks/' + delId + '?api_key=286',
+        type: 'DELETE',
+        success: function(result) {
+            console.log(result);
+        }
+    });
+}
+
 
 window.addEventListener('keypress', function(e){
     if(e.key == "Enter"){
