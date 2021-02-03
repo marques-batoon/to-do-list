@@ -1,3 +1,13 @@
 tr.task {
     font-size: 18px;
 }
+
+i.bi-x {
+    position: absolute;
+    right: 5%;
+    z-index: 3;
+}
+
+.hide {
+    display: none;
+}
