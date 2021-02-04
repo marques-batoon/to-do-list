@@ -6,6 +6,15 @@ i.bi-x {
     position: absolute;
     right: 5%;
     z-index: 3;
+    opacity: 50%;
+}
+
+i.bi-x:hover {
+    opacity: 100%;
+}
+
+i.bi-x:active {
+    font-size: 110%;
 }
 
 .hide {
