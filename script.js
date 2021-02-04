@@ -8,7 +8,11 @@ var updateList = function() {
         success: function(response) {;
             taskList = response;
             for(var i = 0; i < response.tasks.length; i++){
-                $('tbody').prepend($('<tr class="task"><td id="'+ response.tasks[i].id +'"><i class="bi bi-circle"></i> ' + response.tasks[i].content + '<i class="bi bi-x"></i></td></tr>'));
+                var circle;
+                if(response.tasks[i].completed){
+                    circle = '<i class="bi bi-check-circle"></i> ';
+                } else circle = '<i class="bi bi-circle"></i> ';
+                $('tbody').prepend($('<tr class="task"><td id="'+ response.tasks[i].id +'">' + circle + response.tasks[i].content + '<i class="bi bi-x"></i></td></tr>'));
                 console.log(response.tasks[i]);
             }
             //$('tr.task').html(taskList.tasks[0].content);
@@ -56,12 +60,60 @@ var deleteItem = function(delId) {
     });
 }
 
+var completeItem = function(compId) {
+    $.ajax({
+        url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks/' + compId + '/mark_complete?api_key=286',
+        type: 'PUT',
+        data: JSON.stringify({
+            task: {
+              completed: 'true'
+            }
+          }),
+        success: function(data) {
+          console.log(data);
+          console.log('Item Completed');
+        }
+      });
+}
+
+var incompleteItem = function(compId) {
+    $.ajax({
+        url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks/' + compId + '/mark_active?api_key=286',
+        type: 'PUT',
+        data: JSON.stringify({
+            task: {
+              completed: 'false'
+            }
+          }),
+        success: function(data) {
+          console.log(data);
+          console.log('Item Active');
+        }
+      });
+}
+
 $(document).on('click', '.bi-x', function(e) {
     console.log("clicked me!");
     var idNum = $(this).parent().attr('id');
     deleteItem(idNum);
     $(this).parent().parent().remove();
-})
+});
+
+$(document).on('click', '.bi-circle', function(e){
+    //console.log("clicked circle!");
+    $(this).toggleClass("bi-circle");
+    $(this).toggleClass("bi-check-circle");
+    var idNum = $(this).parent().attr('id');
+    completeItem(idNum);
+});
+
+$(document).on('click', '.bi-check-circle', function(e){
+    //console.log("clicked checked circle!");
+    $(this).toggleClass("bi-circle");
+    $(this).toggleClass("bi-check-circle");
+    var idNum = $(this).parent().attr('id');
+    incompleteItem(idNum);
+});
 
 window.addEventListener('keypress', function(e){
     if(e.key == "Enter"){
